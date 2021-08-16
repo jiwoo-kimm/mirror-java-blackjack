@@ -15,7 +15,7 @@ public class Dealer extends Participant {
         return hands.getFirstHand();
     }
 
-    public boolean hit() {
+    public boolean needMoreCard() {
         return sumRank() <= HIT_THRESHOLD;
     }
 }

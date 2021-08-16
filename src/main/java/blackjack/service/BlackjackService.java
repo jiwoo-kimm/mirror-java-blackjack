@@ -1,24 +1,20 @@
 package blackjack.service;
 
-import blackjack.domain.game.DeckGenerator;
-import blackjack.domain.game.RandomDeckGenerator;
-import blackjack.domain.game.Table;
+import blackjack.domain.deck.DeckGenerator;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
-import blackjack.domain.prize.PrizeResults;
-import blackjack.dto.DealerDto;
-import blackjack.dto.FinalDealerDto;
-import blackjack.dto.ParticipantsDto;
-import blackjack.dto.PlayerDto;
+import blackjack.domain.profit.ParticipantsProfit;
+import blackjack.domain.table.Table;
+import blackjack.dto.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BlackjackService {
     private final Table table;
 
-    public BlackjackService(List<String> playerNames, DeckGenerator deckGenerator) {
-        this.table = new Table(playerNames, deckGenerator);
+    public BlackjackService(List<PlayerInput> playerInputs, DeckGenerator deckGenerator) {
+        this.table = new Table(playerInputs, deckGenerator);
     }
 
     public ParticipantsDto getParticipants() {
@@ -27,26 +23,19 @@ public class BlackjackService {
         return new ParticipantsDto(dealerDto, playersDto);
     }
 
-    public ParticipantsDto getFinalParticipants() {
-        DealerDto finalDealerDto = generateFinalDealerDto();
-        List<PlayerDto> playersDto = generatePlayerDto();
-        return new ParticipantsDto(finalDealerDto, playersDto);
-    }
-
     private DealerDto generateDealerDto() {
         Dealer dealer = table.getDealer();
         return new DealerDto(dealer.getFaceUpCard());
     }
 
-    private FinalDealerDto generateFinalDealerDto() {
-        Dealer dealer = table.getDealer();
-        return new FinalDealerDto(dealer);
+    private List<PlayerDto> generatePlayerDto() {
+        return table.getPlayers().stream()
+                .map(PlayerDto::new)
+                .collect(Collectors.toList());
     }
 
-    private List<PlayerDto> generatePlayerDto() {
-        List<PlayerDto> playersDto = new ArrayList<>();
-        table.getPlayers().forEach(player -> playersDto.add(new PlayerDto(player)));
-        return playersDto;
+    public boolean isDealerBlackjack() {
+        return table.isDealerBlackjack();
     }
 
     public PlayerDto hit(Player player) {
@@ -58,8 +47,19 @@ public class BlackjackService {
         table.finalDeal();
     }
 
-    public PrizeResults calculatePrizeResults() {
-        return new PrizeResults(table);
+    public ParticipantsDto getFinalParticipants() {
+        DealerDto finalDealerDto = generateFinalDealerDto();
+        List<PlayerDto> playersDto = generatePlayerDto();
+        return new ParticipantsDto(finalDealerDto, playersDto);
+    }
+
+    private FinalDealerDto generateFinalDealerDto() {
+        Dealer dealer = table.getDealer();
+        return new FinalDealerDto(dealer);
+    }
+
+    public ParticipantsProfit getProfitResults() {
+        return table.calculateParticipantsProfit();
     }
 
     public List<Player> getPlayers() {

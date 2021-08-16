@@ -1,7 +1,6 @@
 package blackjack.domain.participant;
 
 import blackjack.domain.card.Card;
-import blackjack.domain.game.Hands;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public abstract class Participant {
     }
 
     public boolean isBlackjack() {
-        return hands.countAceCards() == 1 && hands.countMajorCards() == 1;
+        return hands.hasOneAceCard() && hands.hasOneMajorCard();
     }
 
     public int countHands() {

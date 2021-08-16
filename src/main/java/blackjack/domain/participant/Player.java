@@ -4,7 +4,7 @@ import blackjack.domain.card.Card;
 
 import java.util.List;
 
-import static blackjack.domain.game.Table.INITIAL_DEAL_COUNT;
+import static blackjack.domain.table.Table.INITIAL_DEAL_COUNT;
 
 public class Player extends Participant {
     private final String name;

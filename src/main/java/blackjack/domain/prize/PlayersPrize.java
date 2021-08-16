@@ -1,17 +1,35 @@
 package blackjack.domain.prize;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import blackjack.domain.participant.Dealer;
+import blackjack.domain.participant.Player;
+import blackjack.exception.NoSuchPlayerException;
+
+import java.util.*;
 
 public class PlayersPrize {
-    private final List<PlayerPrize> playerPrizes;
+    private final Map<String, Prize> prizes;
 
-    public PlayersPrize(List<PlayerPrize> playerPrizes) {
-        this.playerPrizes = Collections.unmodifiableList(new ArrayList<>(playerPrizes));
+    public PlayersPrize(List<Player> players, Dealer dealer) {
+        Map<String, Prize> map = new HashMap<>();
+        players.forEach(player -> {
+            Prize prize = Prize.of(player, dealer);
+            map.put(player.getName(), prize);
+        });
+
+        this.prizes = Collections.unmodifiableMap(map);
     }
 
-    public List<PlayerPrize> getPlayerPrizes() {
-        return playerPrizes;
+    public Collection<String> getPlayerNames() {
+        return prizes.keySet();
+    }
+
+    public Prize getPrize(String playerName) {
+        Prize prize = prizes.get(playerName);
+
+        if (prize == null) {
+            throw new NoSuchPlayerException(playerName);
+        }
+
+        return prize;
     }
 }
