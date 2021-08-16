@@ -5,7 +5,7 @@ import blackjack.domain.card.Card;
 import java.util.ArrayList;
 import java.util.List;
 
-import static blackjack.domain.card.Signature.sumAceCards;
+import static blackjack.domain.card.Signature.ACE;
 
 public class Hands {
     private final List<Card> hands;
@@ -44,14 +44,26 @@ public class Hands {
                 .sum();
     }
 
-    public boolean hasOneAceCard() {
-        return countAceCards() == 1;
-    }
-
     private int countAceCards() {
         return (int) hands.stream()
                 .filter(Card::isAceCard)
                 .count();
+    }
+
+    protected int sumAceCards(int sumExceptAceCards, int aceCardCount) {
+        if (softRankAvailable(sumExceptAceCards, aceCardCount)) {
+            return ACE.getSoftRank() + (aceCardCount - 1) * ACE.getHardRank();
+        }
+        return aceCardCount * ACE.getHardRank();
+    }
+
+    private boolean softRankAvailable(int sumExceptAceCards, int aceCardCount) {
+        int threshold = ACE.getSoftRank() - aceCardCount;
+        return sumExceptAceCards <= threshold;
+    }
+
+    public boolean hasOneAceCard() {
+        return countAceCards() == 1;
     }
 
     public boolean hasOneMajorCard() {

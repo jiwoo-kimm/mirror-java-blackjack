@@ -49,11 +49,11 @@ public class Card {
     }
 
     public boolean isMajorCard() {
-        return Signature.isMajor(signature);
+        return signature.isMajor();
     }
 
     public boolean isAceCard() {
-        return Signature.isAce(signature);
+        return signature.isAce();
     }
 
     public boolean isNotAceCard() {
@@ -62,6 +62,10 @@ public class Card {
 
     public Suit getSuit() {
         return suit;
+    }
+
+    public String getSuitName() {
+        return suit.getName();
     }
 
     public String getSymbol() {

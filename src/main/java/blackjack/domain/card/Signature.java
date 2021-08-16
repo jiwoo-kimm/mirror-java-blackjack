@@ -15,8 +15,8 @@ public enum Signature {
     NUMBER9("9", 9),
     NUMBER10("10", 10);
 
-    private static final int HARD_RANK = 1;
-    private static final int SOFT_RANK = 11;
+    private static final int HARD_RANK_OF_ACE = 1;
+    private static final int SOFT_RANK_OF_ACE = 11;
 
     private final String symbol;
     private final int rank;
@@ -26,24 +26,26 @@ public enum Signature {
         this.rank = rank;
     }
 
-    public static boolean isMajor(Signature signature) {
-        return signature == JACK || signature == QUEEN || signature == KING;
+    public boolean isMajor() {
+        return this == JACK || this == QUEEN || this == KING;
     }
 
-    public static boolean isAce(Signature signature) {
-        return signature == ACE;
+    public boolean isAce() {
+        return this == ACE;
     }
 
-    public static int sumAceCards(int sumExceptAceCards, int aceCardCount) {
-        if (softRankAvailable(sumExceptAceCards, aceCardCount)) {
-            return SOFT_RANK + (aceCardCount - 1) * HARD_RANK;
+    public int getHardRank() {
+        if (this != ACE) {
+            throw new UnsupportedOperationException(String.format("Hard rank는 ACE만 보유하고 있습니다. CARD=%s", this.name()));
         }
-        return aceCardCount * HARD_RANK;
+        return HARD_RANK_OF_ACE;
     }
 
-    private static boolean softRankAvailable(int sumExceptAceCards, int aceCardCount) {
-        int threshold = SOFT_RANK - aceCardCount;
-        return sumExceptAceCards <= threshold;
+    public int getSoftRank() {
+        if (this != ACE) {
+            throw new UnsupportedOperationException(String.format("Soft rank는 ACE만 보유하고 있습니다. CARD=%s", this.name()));
+        }
+        return SOFT_RANK_OF_ACE;
     }
 
     public String getSymbol() {

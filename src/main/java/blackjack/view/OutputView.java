@@ -49,7 +49,7 @@ public class OutputView {
 
     private static String printCards(List<Card> cards) {
         List<String> cardSignatures = cards.stream()
-                .map(card -> card.getSymbol() + card.getSuit().getName())
+                .map(card -> card.getSymbol() + card.getSuitName())
                 .collect(Collectors.toList());
         return String.join(", ", cardSignatures);
     }
