@@ -1,11 +1,11 @@
-# BLACKJACK Game with TDD & Pair Programming
+# 🃏 BLACKJACK Game with TDD & Pair Programming
 
 - Java로 구현한 블랙잭 게임입니다.
 - TDD와 Pair Programming을 통해 구현했습니다.
 
 <br>
 
-## 프로그램 내용
+## 🎮 프로그램 내용
 
 ```
 게임에 참여할 사람의 이름을 입력하세요.(쉼표 기준으로 분리)
@@ -46,7 +46,7 @@ jason: -20000
 <br>
 
 
-## 기능 구현 목록
+## 📌 기능 구현 목록
 
 ### 입력
   - [x] 게임에 참여할 플레이어를 입력받는다.
